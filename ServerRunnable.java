@@ -11,10 +11,12 @@ public class ServerRunnable implements Runnable{
     }
 
     public void run(){
-        try (OutputStream outs= socket.getOutputStream();
+        try (
+        OutputStream outs= socket.getOutputStream();
         InputStream ins= socket.getInputStream();
         PrintWriter out= new PrintWriter(outs, true);
         Scanner in = new Scanner(ins);
+        ObjectOutputStream outobj =new ObjectOutputStream (outs);
         )
        
         {
@@ -26,6 +28,7 @@ public class ServerRunnable implements Runnable{
                     System.out.println("ADD Operation: " + userinput + " from client: " + socket.toString());
                     out.println(userinput);
                 }if(userinput.contains("LISTALL")){
+                    Query.listAll();
                     System.out.println("LIST ALL Operation: " + userinput + " from client: " + socket.toString());
                     out.println(userinput);
                 }if(userinput.contains("LISTPT")){
