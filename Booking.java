@@ -3,7 +3,6 @@ import java.io.Serializable;
 public class Booking implements Serializable{
     private String bookingID;
     private String staffID;
-    private String clientID;
     private String trainerID;
     private String clientname;
     private char gender;
@@ -16,7 +15,6 @@ public class Booking implements Serializable{
     public Booking(String bid,String sid,String cid,String tid,String cname,char gender,String focus,String date,String time,double duration){
         this.bookingID=bid;
         this.staffID=sid;
-        this.clientID=cid;
         this.trainerID=tid;
         this.clientname=cname;
         this.gender=gender;
@@ -45,13 +43,6 @@ public class Booking implements Serializable{
         this.staffID=sid;
     }
     
-    public String getclientID(){
-        return clientID;
-    }
-
-    public void setclientID(String cid){
-        this.clientID=cid;
-    }
     public String gettrainerID(){
         return trainerID;
     }

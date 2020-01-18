@@ -7,7 +7,7 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 
 public class ClientConsole {
-  public static void main(String[] args) throws IOException {
+  public static void main(String[] args){
 
     String hostName = "localhost";
     int portNumber = 9000;
