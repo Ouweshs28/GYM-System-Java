@@ -28,7 +28,9 @@ public class ServerRunnable implements Runnable{
                     System.out.println("ADD Operation: " + userinput + " from client: " + socket.toString());
                     out.println(userinput);
                 }if(userinput.contains("LISTALL")){
-                    Query.listAll();
+                    ArrayList <Booking> bookings=Query.listAll();
+                    for(Booking i:bookings)
+                    i.printBooking();
                     System.out.println("LIST ALL Operation: " + userinput + " from client: " + socket.toString());
                     out.println(userinput);
                 }if(userinput.contains("LISTPT")){
