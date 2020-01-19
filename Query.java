@@ -1,32 +1,29 @@
 import java.sql.*;
+import java.util.ArrayList;
 
+public class Query {
 
-public class Query{
+    private static Connection DBconnect = DatabaseConnection.getConnection();
 
-    private static Connection DBconnect=DatabaseConnection.getConnection();
+    public static ArrayList<Booking> listAll() {
+        ArrayList<Booking> bookings = new ArrayList<Booking>();
 
-    public static void listAll(){
-        try{
-            Statement statement= DBconnect.createStatement();
-            String query="SELECT * FROM Booking";
-            ResultSet rs=statement.executeQuery(query);
+        try {
+            Statement statement = DBconnect.createStatement();
+            String query = "SELECT * FROM Booking";
+            ResultSet rs = statement.executeQuery(query);
 
-            while(rs.next()){
-                System.out.println(rs.getString("bookingID") + '\t'+
-                                   rs.getString("staffID")+ '\t'+
-                                   rs.getString("trainerID")+ '\t'+
-                                   rs.getString("clientname")+ '\t'+
-                                   rs.getString("gender")+ '\t'+
-                                   rs.getString("focus")+ '\t'+
-                                   rs.getString("bookingdate")+ '\t'+
-                                   rs.getString("bookingtime")+ '\t'+
-                                   rs.getString("duration"));
+            while (rs.next()) {
+                bookings.add(new Booking(rs.getString("bookingID"), rs.getString("staffID"), rs.getString("trainerID"),
+                        rs.getString("clientname"), rs.getString("gender"), rs.getString("focus"),
+                        rs.getString("bookingdate"), rs.getString("bookingtime"), rs.getDouble("duration")));
             }
-        }catch(SQLException ex){
-                System.out.println("Error"+ ex.getMessage());
-            }
-
+        } catch (SQLException ex) {
+            System.out.println("Error" + ex.getMessage());
         }
-        
+        return bookings;
 
     }
+
+
+}

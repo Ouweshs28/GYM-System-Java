@@ -5,14 +5,14 @@ public class Booking implements Serializable{
     private String staffID;
     private String trainerID;
     private String clientname;
-    private char gender;
+    private String gender;
     private String focus;
     private String date;
     private String time;
     private double duration;
 
     
-    public Booking(String bid,String sid,String cid,String tid,String cname,char gender,String focus,String date,String time,double duration){
+    public Booking(String bid,String sid,String tid,String cname,String gender,String focus,String date,String time,double duration){
         this.bookingID=bid;
         this.staffID=sid;
         this.trainerID=tid;
@@ -58,11 +58,11 @@ public class Booking implements Serializable{
         this.clientname=cname;
     }
 
-    public char getgender(){
+    public String getgender(){
         return gender;
     }
 
-    public void setgender(char g){
+    public void setgender(String g){
         this.gender=g;
     }
 
@@ -104,7 +104,6 @@ public class Booking implements Serializable{
         +getdate()+ '\t'
         +gettime()+ '\t'+getduration());
     }
-
 
 
 }
