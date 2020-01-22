@@ -22,20 +22,14 @@ public class ClientConsole {
       String userInput;
       while ((userInput = stdIn.readLine()) != null) {
         out.println(userInput);
+        
         switch (userInput) {
         case "LISTALL":
-          ArrayList <Booking> bookings=new ArrayList<>();
-          try {
-            Object object = inobj.readObject();
-            bookings =  (ArrayList<Booking>) object;
-           for(Booking i:bookings){
-             i.printBooking();
-           }
-        } catch (ClassNotFoundException e) {
-            System.out.println("The title list has not come from the server");
-            e.printStackTrace();
-        }
+          getFromServer(inobj);
           break;
+          case "LISTPT":
+          getFromServer(inobj);
+        break;
         }
       }
     } catch (UnknownHostException e) {
@@ -44,6 +38,23 @@ public class ClientConsole {
     } catch (IOException e) {
       System.err.println("Couldn't get I/O for the connection to " + hostName);
       System.exit(1);
+    }
+  }
+
+  public static void getFromServer(ObjectInputStream inobj){
+    ArrayList<Booking> bookings = new ArrayList<Booking>();
+    try {
+      Object object = inobj.readObject();
+      bookings =  (ArrayList<Booking>) object;
+     for(Booking i:bookings){
+       i.printBooking();
+     }
+  } catch (ClassNotFoundException e) {
+    System.err.println("The title list has not come from the server");
+      e.printStackTrace();
+  } catch (IOException e) {
+    System.err.println("The title list has not come from the server");
+      e.printStackTrace();
     }
   }
 }

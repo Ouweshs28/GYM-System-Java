@@ -20,43 +20,36 @@ public class ServerRunnable implements Runnable {
         {
             String userinput;
             while (in.hasNextLine()) {
-                System.out.println();
                 userinput = in.nextLine();
                 if (userinput.contains("ADD")) {
                     System.out.println("ADD Operation: " + userinput + " from client: " + socket.toString());
                     out.println(userinput);
                 }
-                if (userinput.contains("LISTALL")) {
-                    ArrayList<Booking> bookings = Query.listAll();
-                    try {
-                        outobj.writeObject(bookings);
-                        System.out.println("Written");
-                    } catch (IOException e) {
-                        System.out.println("IO Exception");
-                        e.printStackTrace();
-                    }
-                    System.out.println("LIST ALL Operation: " + userinput + " from client: " + socket.toString());
-                    out.println(userinput);
+                else if (userinput.equals("LISTALL")) {
+                    sendAllResult(outobj);
                 }
-                if (userinput.contains("LISTPT")) {
+                else if (userinput.contains("LISTPT")) {
+                    String result[]=Query.splitInput(userinput);
+                    sendPTIDResult(outobj, result);
                     System.out.println(
                             "LIST PERSONAL TRANIER Operation: " + userinput + " from client: " + socket.toString());
-                    out.println(userinput);
+                            
+                    out.println(result[0]);
                 }
-                if (userinput.contains("LISTCLIENT")) {
+                else if (userinput.contains("LISTCLIENT")) {
                     System.out.println("LIST Client Operation: " + userinput + " from client: " + socket.toString());
                     out.println(userinput);
                 }
-                if (userinput.contains("LISTDAY")) {
+                else if (userinput.contains("LISTDAY")) {
                     System.out.println(
                             "LIST BOOKING DAYS Operation: " + userinput + " from client: " + socket.toString());
                     out.println(userinput);
                 }
-                if (userinput.contains("UPDATE")) {
+                else if (userinput.contains("UPDATE")) {
                     System.out.println("UPDATE BOOKING Operation: " + userinput + " from client: " + socket.toString());
                     out.println(userinput);
                 }
-                if (userinput.contains("DELETE")) {
+                else if (userinput.contains("DELETE")) {
                     System.out.println("DELETE BOOKING Operation: " + userinput + " from client: " + socket.toString());
                     out.println(userinput);
                 } else {
@@ -69,6 +62,28 @@ public class ServerRunnable implements Runnable {
         } catch (IOException e) {
             System.out.println("Exception caught when trying to listen on port");
             System.out.println(e.getMessage());
+        }
+    }
+    public void sendAllResult(ObjectOutputStream outobj) {
+        ArrayList<Booking> bookings = Query.listAll();
+        sendResultToClient(outobj, bookings);
+
+    }
+
+    public void sendPTIDResult(ObjectOutputStream outobj, String[] split) {
+        ArrayList<Booking> bookings = Query.listPTID(split[1]);
+        sendResultToClient(outobj, bookings);
+    }
+
+    public void sendResultToClient(ObjectOutputStream outobj, ArrayList<Booking> bookings) {
+        try {
+            outobj.reset();
+            outobj.flush();
+            outobj.writeObject(bookings);
+            System.out.println("Written");
+        } catch (IOException e) {
+            System.out.println("IO Exception");
+            e.printStackTrace();
         }
     }
 }
