@@ -22,13 +22,17 @@ public class ClientConsole {
       String userInput;
       while ((userInput = stdIn.readLine()) != null) {
         out.println(userInput);
-        
-        switch (userInput) {
+        String choice[]=Query.splitInput(userInput);
+
+        switch (choice[0]) {
         case "LISTALL":
           getFromServer(inobj);
           break;
-          case "LISTPT":
+        case "LISTPT":
           getFromServer(inobj);
+          break;
+        default:
+        System.out.println("Invalid Input try again");
         break;
         }
       }
@@ -41,19 +45,20 @@ public class ClientConsole {
     }
   }
 
-  public static void getFromServer(ObjectInputStream inobj){
+  public static void getFromServer(ObjectInputStream inobj) {
     ArrayList<Booking> bookings = new ArrayList<Booking>();
     try {
       Object object = inobj.readObject();
-      bookings =  (ArrayList<Booking>) object;
-     for(Booking i:bookings){
-       i.printBooking();
-     }
-  } catch (ClassNotFoundException e) {
-    System.err.println("The title list has not come from the server");
+      bookings = (ArrayList<Booking>) object;
+
+      for (Booking i : bookings) {
+        i.printBooking();
+      }
+    } catch (ClassNotFoundException e) {
+      System.err.println("The title list has not come from the server");
       e.printStackTrace();
-  } catch (IOException e) {
-    System.err.println("The title list has not come from the server");
+    } catch (IOException e) {
+      System.err.println("The title list has not come from the server");
       e.printStackTrace();
     }
   }

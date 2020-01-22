@@ -34,7 +34,7 @@ public class ServerRunnable implements Runnable {
                     System.out.println(
                             "LIST PERSONAL TRANIER Operation: " + userinput + " from client: " + socket.toString());
                             
-                    out.println(result[0]);
+                    //out.println(result[0]);
                 }
                 else if (userinput.contains("LISTCLIENT")) {
                     System.out.println("LIST Client Operation: " + userinput + " from client: " + socket.toString());
