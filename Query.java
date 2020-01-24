@@ -25,14 +25,27 @@ public class Query {
 
     }
 
-    public static ArrayList<Booking> listPTID(String result) {
+    public static ArrayList<Booking> listQuries(String[] result) {
+        String query=null;
+        
+        switch(result[0]){
+            case "LISTPT":
+            query = " SELECT * FROM Booking " + " WHERE trainerID = ?";
+            break;
+            case "LISTCLIENT":
+            query = " SELECT * FROM Booking " + " WHERE clientID = ?";
+            break;
+            case "LISTDAY":
+            query = " SELECT * FROM Booking " + " WHERE bookingdate = ?";
+            break;
+        }
 
         ArrayList<Booking> bookings = new ArrayList<Booking>();
 
         try {
-            String query = " SELECT * FROM Booking " + " WHERE trainerID = ?";
+            
             PreparedStatement preparedStatement = DBconnect.prepareStatement(query);
-            preparedStatement.setString(1, result);
+            preparedStatement.setString(1, result[1]);
 
             ResultSet rs = preparedStatement.executeQuery();
             while (rs.next()) {

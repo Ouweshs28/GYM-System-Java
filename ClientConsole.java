@@ -22,19 +22,14 @@ public class ClientConsole {
       String userInput;
       while ((userInput = stdIn.readLine()) != null) {
         out.println(userInput);
-        String choice[]=Query.splitInput(userInput);
-
-        switch (choice[0]) {
-        case "LISTALL":
+        
+        if (userInput.contains("LISTALL") || userInput.contains("LISTPT") || userInput.contains("LISTCLIENT") ||userInput.contains("LISTALL")){
           getFromServer(inobj);
-          break;
-        case "LISTPT":
-          getFromServer(inobj);
-          break;
-        default:
-        System.out.println("Invalid Input try again");
-        break;
         }
+        else{
+          System.out.println("Invalid Input try again");
+        }
+        
       }
     } catch (UnknownHostException e) {
       System.err.println("Don't know about host " + hostName);
@@ -51,9 +46,14 @@ public class ClientConsole {
       Object object = inobj.readObject();
       bookings = (ArrayList<Booking>) object;
 
+      if(bookings.size()==0 || bookings==null){
+        System.out.println("No result found");
+      }else{
+
       for (Booking i : bookings) {
         i.printBooking();
       }
+    }
     } catch (ClassNotFoundException e) {
       System.err.println("The title list has not come from the server");
       e.printStackTrace();

@@ -21,42 +21,33 @@ public class ServerRunnable implements Runnable {
             String userinput;
             while (in.hasNextLine()) {
                 userinput = in.nextLine();
+                String result[] = Query.splitInput(userinput);
                 if (userinput.contains("ADD")) {
                     System.out.println("ADD Operation: " + userinput + " from client: " + socket.toString());
                     out.println(userinput);
-                }
-                else if (userinput.equals("LISTALL")) {
+                } else if (userinput.equals("LISTALL")) {
                     sendAllResult(outobj);
-                }
-                else if (userinput.contains("LISTPT")) {
-                    String result[]=Query.splitInput(userinput);
-                    sendPTIDResult(outobj, result);
+                } else if (userinput.contains("LISTPT")) {
+                    sendQueryResult(outobj, result);
                     System.out.println(
                             "LIST PERSONAL TRANIER Operation: " + userinput + " from client: " + socket.toString());
-                            
-                    //out.println(result[0]);
-                }
-                else if (userinput.contains("LISTCLIENT")) {
+
+                } else if (userinput.contains("LISTCLIENT")) {
                     System.out.println("LIST Client Operation: " + userinput + " from client: " + socket.toString());
+                    sendQueryResult(outobj, result);
                     out.println(userinput);
-                }
-                else if (userinput.contains("LISTDAY")) {
+                } else if (userinput.contains("LISTDAY")) {
                     System.out.println(
                             "LIST BOOKING DAYS Operation: " + userinput + " from client: " + socket.toString());
+                    sendQueryResult(outobj, result);
                     out.println(userinput);
-                }
-                else if (userinput.contains("UPDATE")) {
+                } else if (userinput.contains("UPDATE")) {
                     System.out.println("UPDATE BOOKING Operation: " + userinput + " from client: " + socket.toString());
                     out.println(userinput);
-                }
-                else if (userinput.contains("DELETE")) {
+                } else if (userinput.contains("DELETE")) {
                     System.out.println("DELETE BOOKING Operation: " + userinput + " from client: " + socket.toString());
                     out.println(userinput);
-                } else {
-                    System.out.println("Invalid Operation: " + userinput + " from client: " + socket.toString());
-                    out.println(userinput);
-                }
-
+                } 
             }
 
         } catch (IOException e) {
@@ -64,14 +55,15 @@ public class ServerRunnable implements Runnable {
             System.out.println(e.getMessage());
         }
     }
+
     public void sendAllResult(ObjectOutputStream outobj) {
         ArrayList<Booking> bookings = Query.listAll();
         sendResultToClient(outobj, bookings);
 
     }
 
-    public void sendPTIDResult(ObjectOutputStream outobj, String[] split) {
-        ArrayList<Booking> bookings = Query.listPTID(split[1]);
+    public void sendQueryResult(ObjectOutputStream outobj, String[] split) {
+        ArrayList<Booking> bookings = Query.listQuries(split);
         sendResultToClient(outobj, bookings);
     }
 
