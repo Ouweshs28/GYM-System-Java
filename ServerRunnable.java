@@ -29,8 +29,7 @@ public class ServerRunnable implements Runnable {
                     sendAllResult(outobj);
                 } else if (userinput.contains("LISTPT")) {
                     sendQueryResult(outobj, result);
-                    System.out.println(
-                            "LIST PERSONAL TRANIER Operation: " + userinput + " from client: " + socket.toString());
+                    System.out.println("LIST PERSONAL TRANIER Operation: " + userinput + " from client: " + socket.toString());
 
                 } else if (userinput.contains("LISTCLIENT")) {
                     System.out.println("LIST Client Operation: " + userinput + " from client: " + socket.toString());
@@ -47,7 +46,7 @@ public class ServerRunnable implements Runnable {
                 } else if (userinput.contains("DELETE")) {
                     System.out.println("DELETE BOOKING Operation: " + userinput + " from client: " + socket.toString());
                     out.println(userinput);
-                } 
+                }
             }
 
         } catch (IOException e) {

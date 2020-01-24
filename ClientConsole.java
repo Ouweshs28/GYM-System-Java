@@ -23,7 +23,10 @@ public class ClientConsole {
       while ((userInput = stdIn.readLine()) != null) {
         out.println(userInput);
         
-        if (userInput.contains("LISTALL") || userInput.contains("LISTPT") || userInput.contains("LISTCLIENT") ||userInput.contains("LISTALL")){
+        if (userInput.contains("LISTALL") ||
+         userInput.contains("LISTPT") || 
+         userInput.contains("LISTCLIENT") ||
+         userInput.contains("LISTDAY")){
           getFromServer(inobj);
         }
         else{
