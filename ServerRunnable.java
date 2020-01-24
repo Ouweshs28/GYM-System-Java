@@ -24,7 +24,6 @@ public class ServerRunnable implements Runnable {
                 String result[] = Query.splitInput(userinput);
                 if (userinput.contains("ADD")) {
                     System.out.println("ADD Operation: " + userinput + " from client: " + socket.toString());
-                    out.println(userinput);
                 } else if (userinput.equals("LISTALL")) {
                     sendAllResult(outobj);
                     System.out.println("LISTALL Operation: " + userinput + " from client: " + socket.toString());
@@ -35,19 +34,15 @@ public class ServerRunnable implements Runnable {
                 } else if (userinput.contains("LISTCLIENT")) {
                     System.out.println("LIST Client Operation: " + userinput + " from client: " + socket.toString());
                     sendQueryResult(outobj, result);
-                    out.println(userinput);
                 } else if (userinput.contains("LISTDAY")) {
                     System.out.println(
                             "LIST BOOKING DAYS Operation: " + userinput + " from client: " + socket.toString());
                     sendQueryResult(outobj, result);
-                    out.println(userinput);
                 } else if (userinput.contains("UPDATE")) {
                     System.out.println("UPDATE BOOKING Operation: " + userinput + " from client: " + socket.toString());
-                    out.println(userinput);
                 } else if (userinput.contains("DELETE")) {
                     System.out.println("DELETE BOOKING Operation: " + userinput + " from client: " + socket.toString());
                     sendQueryResult(outobj, result);
-                    out.println(userinput);
                 }
             }
 
