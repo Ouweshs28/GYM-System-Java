@@ -26,8 +26,9 @@ public class ClientConsole {
         if (userInput.contains("LISTALL") ||
          userInput.contains("LISTPT") || 
          userInput.contains("LISTCLIENT") ||
-         userInput.contains("LISTDAY")){
-          getFromServer(inobj);
+         userInput.contains("LISTDAY") ||
+         userInput.contains("DELETE")){
+          getFromServer(inobj,userInput);
         }
         else{
           System.out.println("Invalid Input try again");
@@ -43,7 +44,7 @@ public class ClientConsole {
     }
   }
 
-  public static void getFromServer(ObjectInputStream inobj) {
+  public static void getFromServer(ObjectInputStream inobj,String userInput) {
     ArrayList<Booking> bookings = new ArrayList<Booking>();
     try {
       Object object = inobj.readObject();
@@ -51,17 +52,21 @@ public class ClientConsole {
 
       if(bookings.size()==0 || bookings==null){
         System.out.println("No result found");
-      }else{
+      }else if(!userInput.contains("DELETE")){
 
       for (Booking i : bookings) {
         i.printBooking();
       }
+    }else{
+      System.out.println("Successfully deleted: ");
+      bookings.get(0).printBooking();
     }
+  
     } catch (ClassNotFoundException e) {
       System.err.println("The title list has not come from the server");
       e.printStackTrace();
     } catch (IOException e) {
-      System.err.println("The title list has not come from the server");
+      System.err.println("IO Exception: ");
       e.printStackTrace();
     }
   }

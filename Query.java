@@ -26,24 +26,27 @@ public class Query {
     }
 
     public static ArrayList<Booking> listQuries(String[] result) {
-        String query=null;
-        
-        switch(result[0]){
-            case "LISTPT":
+        String query = null;
+
+        switch (result[0]) {
+        case "LISTPT":
             query = " SELECT * FROM Booking " + " WHERE trainerID = ?";
             break;
-            case "LISTCLIENT":
+        case "LISTCLIENT":
             query = " SELECT * FROM Booking " + " WHERE clientID = ?";
             break;
-            case "LISTDAY":
+        case "LISTDAY":
             query = " SELECT * FROM Booking " + " WHERE bookingdate = ?";
+            break;
+        case "DELETE":
+            query = " SELECT * FROM Booking " + " WHERE bookingID = ?";
             break;
         }
 
         ArrayList<Booking> bookings = new ArrayList<Booking>();
 
         try {
-            
+
             PreparedStatement preparedStatement = DBconnect.prepareStatement(query);
             preparedStatement.setString(1, result[1]);
 
@@ -56,6 +59,9 @@ public class Query {
         } catch (SQLException ex) {
             System.out.println("SQL error: " + ex.getMessage());
         }
+        if(result[0].equals("DELETE")){
+            deleteFromDB(bookings, result[1]);
+        }
 
         return bookings;
     }
@@ -63,6 +69,22 @@ public class Query {
     public static String[] splitInput(String str) {
         String split[] = str.split(" ", 0);
         return split;
+    }
+
+    public static void deleteFromDB(ArrayList<Booking> bookings, String delete) {
+        String query = "DELETE FROM Booking WHERE bookingID = ? ";
+        if (bookings.size() != 0) {
+            try {
+                PreparedStatement preparedStatement = DBconnect.prepareStatement(query);
+                preparedStatement.setString(1, delete);
+
+                preparedStatement.executeUpdate();
+
+            } catch (SQLException ex) {
+                System.out.println("SQL error: " + ex.getMessage());
+            }
+        }
+
     }
 
 }
