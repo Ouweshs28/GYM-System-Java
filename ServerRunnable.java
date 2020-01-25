@@ -13,7 +13,6 @@ public class ServerRunnable implements Runnable {
     public void run() {
         try (OutputStream outs = socket.getOutputStream();
                 InputStream ins = socket.getInputStream();
-                PrintWriter out = new PrintWriter(outs, true);
                 Scanner in = new Scanner(ins);
                 ObjectOutputStream outobj = new ObjectOutputStream(outs);)
 
@@ -23,24 +22,30 @@ public class ServerRunnable implements Runnable {
                 userinput = in.nextLine();
                 String result[] = Query.splitInput(userinput);
                 if (userinput.contains("ADD")) {
+
                     System.out.println("ADD Operation: " + userinput + " from client: " + socket.toString());
-                } else if (userinput.equals("LISTALL")) {
+                } else if (userinput.equals("LISTALL") && result.length == 1) {
+
                     sendAllResult(outobj);
                     System.out.println("LISTALL Operation: " + userinput + " from client: " + socket.toString());
-                } else if (userinput.contains("LISTPT")) {
-                    sendQueryResult(outobj, result);
-                    System.out.println("LIST PERSONAL TRANIER Operation: " + userinput + " from client: " + socket.toString());
+                } else if (userinput.contains("LISTPT") && result.length == 2) {
 
-                } else if (userinput.contains("LISTCLIENT")) {
+                    sendQueryResult(outobj, result);
+                    System.out.println(
+                            "LIST PERSONAL TRANIER Operation: " + userinput + " from client: " + socket.toString());
+
+                } else if (userinput.contains("LISTCLIENT") && result.length == 2) {
                     System.out.println("LIST Client Operation: " + userinput + " from client: " + socket.toString());
                     sendQueryResult(outobj, result);
-                } else if (userinput.contains("LISTDAY")) {
+                } else if (userinput.contains("LISTDAY") && result.length == 2) {
                     System.out.println(
                             "LIST BOOKING DAYS Operation: " + userinput + " from client: " + socket.toString());
                     sendQueryResult(outobj, result);
                 } else if (userinput.contains("UPDATE")) {
+
                     System.out.println("UPDATE BOOKING Operation: " + userinput + " from client: " + socket.toString());
-                } else if (userinput.contains("DELETE")) {
+                } else if (userinput.contains("DELETE") && result.length == 2) {
+
                     System.out.println("DELETE BOOKING Operation: " + userinput + " from client: " + socket.toString());
                     sendQueryResult(outobj, result);
                 }

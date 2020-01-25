@@ -22,18 +22,11 @@ public class ClientConsole {
       String userInput;
       while ((userInput = stdIn.readLine()) != null) {
         out.println(userInput);
-        
-        if (userInput.contains("LISTALL") ||
-         userInput.contains("LISTPT") || 
-         userInput.contains("LISTCLIENT") ||
-         userInput.contains("LISTDAY") ||
-         userInput.contains("DELETE")){
-          getFromServer(inobj,userInput);
+        boolean valid;
+        if (valid = validateInput(userInput)) {
+          getFromServer(inobj, userInput);
         }
-        else{
-          System.out.println("Invalid Input try again");
-        }
-        
+
       }
     } catch (UnknownHostException e) {
       System.err.println("Don't know about host " + hostName);
@@ -44,24 +37,24 @@ public class ClientConsole {
     }
   }
 
-  public static void getFromServer(ObjectInputStream inobj,String userInput) {
+  public static void getFromServer(ObjectInputStream inobj, String userInput) {
     ArrayList<Booking> bookings = new ArrayList<Booking>();
     try {
       Object object = inobj.readObject();
       bookings = (ArrayList<Booking>) object;
 
-      if(bookings.size()==0 || bookings==null){
+      if (bookings.size() == 0 || bookings == null) {
         System.out.println("No result found");
-      }else if(!userInput.contains("DELETE")){
+      } else if (!userInput.contains("DELETE")) {
 
-      for (Booking i : bookings) {
-        i.printBooking();
+        for (Booking i : bookings) {
+          i.printBooking();
+        }
+      } else {
+        System.out.println("Successfully deleted: ");
+        bookings.get(0).printBooking();
       }
-    }else{
-      System.out.println("Successfully deleted: ");
-      bookings.get(0).printBooking();
-    }
-  
+
     } catch (ClassNotFoundException e) {
       System.err.println("The title list has not come from the server");
       e.printStackTrace();
@@ -69,5 +62,35 @@ public class ClientConsole {
       System.err.println("IO Exception: ");
       e.printStackTrace();
     }
+  }
+
+  public static boolean validateInput(String userInput) {
+    boolean valid = false;
+    String[] userInputArray = Query.splitInput(userInput);
+    if (userInput.contains("LISTALL") && userInputArray.length > 1)
+
+      System.err.println("Invalid command provided: Usage LISTALL");
+
+    else if (userInput.contains("LISTPT") && (userInputArray.length > 2 || userInputArray.length == 1))
+
+      System.err.println("Invalid command provided: Usage LISTPT <PT ID>");
+
+    else if (userInput.contains("LISTCLIENT") && (userInputArray.length > 2 || userInputArray.length == 1))
+
+      System.err.println("Invalid command provided: Usage LISTCLIENT <CLIENT ID>");
+
+    else if (userInput.contains("LISTDAY") && (userInputArray.length > 2 || userInputArray.length == 1))
+
+      System.err.println("Invalid command provided: Usage LISTDAY <DATE> FORMAT 'YYYY-MM-DD'");
+
+    else if (userInput.contains("DELETE") && (userInputArray.length > 2 || userInputArray.length == 1))
+
+      System.err.println("Invalid command provided: Usage DELETE <BookingID>");
+
+    else
+      valid = true;
+
+    return valid;
+
   }
 }
