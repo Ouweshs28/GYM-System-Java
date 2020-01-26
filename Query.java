@@ -14,9 +14,9 @@ public class Query {
             ResultSet rs = statement.executeQuery(query);
 
             while (rs.next()) {
-                bookings.add(new Booking(rs.getString("bookingID"), rs.getString("staffID"), rs.getString("trainerID"),
-                        rs.getString("clientname"), rs.getString("gender"), rs.getString("focus"),
-                        rs.getString("bookingdate"), rs.getString("bookingtime"), rs.getDouble("duration")));
+                bookings.add(new Booking(rs.getString("bookingID"), rs.getString("trainerID"), rs.getString("clientID"),
+                        rs.getString("focus"), rs.getString("bookingDate"), rs.getString("bookingTime"),
+                        rs.getString("duration"), rs.getString("endtime")));
             }
         } catch (SQLException ex) {
             System.out.println("Error" + ex.getMessage());
@@ -52,9 +52,9 @@ public class Query {
 
             ResultSet rs = preparedStatement.executeQuery();
             while (rs.next()) {
-                bookings.add(new Booking(rs.getString("bookingID"), rs.getString("staffID"), rs.getString("trainerID"),
-                        rs.getString("clientname"), rs.getString("gender"), rs.getString("focus"),
-                        rs.getString("bookingdate"), rs.getString("bookingtime"), rs.getDouble("duration")));
+                bookings.add(new Booking(rs.getString("bookingID"), rs.getString("trainerID"), rs.getString("clientID"),
+                        rs.getString("focus"), rs.getString("bookingDate"), rs.getString("bookingTime"),
+                        rs.getString("duration"), rs.getString("endtime")));
             }
         } catch (SQLException ex) {
             System.out.println("SQL error: " + ex.getMessage());

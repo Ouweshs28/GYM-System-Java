@@ -2,26 +2,25 @@ import java.io.Serializable;
 
 public class Booking implements Serializable{
     private String bookingID;
-    private String staffID;
     private String trainerID;
-    private String clientname;
-    private String gender;
+    private String clientID;
     private String focus;
     private String date;
-    private String time;
-    private double duration;
+    private String startTime;
+    private String duration;
+    private String endTime;
+
 
     
-    public Booking(String bid,String sid,String tid,String cname,String gender,String focus,String date,String time,double duration){
+    public Booking(String bid,String tid,String cid,String focus,String date,String st,String d,String ed){
         this.bookingID=bid;
-        this.staffID=sid;
         this.trainerID=tid;
-        this.clientname=cname;
-        this.gender=gender;
+        this.clientID=cid;
         this.focus=focus;
         this.date=date;
-        this.time=time;
-        this.duration=duration;
+        this.startTime=st;
+        this.duration=d;
+        this.endTime=ed;
 
     }
 
@@ -35,35 +34,19 @@ public class Booking implements Serializable{
     public void setbookingID(String bid){
         this.bookingID=bid;
     }
-    public String getstaffID(){
-        return staffID;
-    }
-
-    public void setstaffID(String sid){
-        this.staffID=sid;
-    }
-    
     public String gettrainerID(){
         return trainerID;
     }
+
     public void settrainerID(String tid){
         this.trainerID=tid;
     }
-
-    public String getclientname(){
-        return clientname;
+    
+    public String getclientID(){
+        return clientID;
     }
-
-    public void setclientname(String cname){
-        this.clientname=cname;
-    }
-
-    public String getgender(){
-        return gender;
-    }
-
-    public void setgender(String g){
-        this.gender=g;
+    public void setclientID(String cid){
+        this.clientID=cid;
     }
 
     public String getfocus(){
@@ -82,27 +65,39 @@ public class Booking implements Serializable{
         this.date=date;
     }
 
-    public String gettime(){
-        return time;
+    public String getstarttime(){
+        return startTime;
     }
 
-    public double getduration(){
+    public void setstattime(String st){
+        this.startTime=st;
+    }
+
+    public String getduration(){
         return duration;
     }
 
-    public void setduration(double d){
+    public void setduration(String d){
         this.duration=d;
+    }
+
+    public String getendtime(){
+        return endTime;
+    }
+
+    public void setendtime(String et){
+        this.endTime=et;
     }
 
     public void printBooking(){
         System.out.println(getbookingID() + '\t'
-        +getstaffID()+ '\t'
         +gettrainerID()+ '\t'
-        +getclientname()+ '\t'
-        +getgender()+ '\t'
+        +getclientID()+ '\t'
         +getfocus()+ '\t'
         +getdate()+ '\t'
-        +gettime()+ '\t'+getduration());
+        +getstarttime()+ '\t'
+        +getduration()+ '\t'
+        +getendtime());
     }
 
 

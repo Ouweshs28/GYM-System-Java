@@ -73,7 +73,7 @@ public class ServerRunnable implements Runnable {
             outobj.reset();
             outobj.flush();
             outobj.writeObject(bookings);
-            System.out.println("Written");
+            System.out.println("Sending result to client");
         } catch (IOException e) {
             System.out.println("IO Exception");
             e.printStackTrace();
