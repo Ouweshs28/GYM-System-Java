@@ -65,30 +65,48 @@ public class ClientConsole {
   }
 
   public static boolean validateInput(String userInput) {
-    boolean valid = false;
+    boolean valid = true;
     String[] userInputArray = Query.splitInput(userInput);
-    if (userInput.contains("LISTALL") && userInputArray.length > 1)
+    if(!userInput.contains("LISTALL")||
+    !userInput.contains("LISTPT")||
+    !userInput.contains("LISTCLIENT")||
+    !userInput.contains("LISTDAY")||
+    !userInput.contains("DELETE")){
+      
+      System.err.println("Inavalid Commad, try again!");
+      valid=false;
+    }
+    
+  
+    if (userInput.contains("LISTALL") && userInputArray.length > 1){
 
       System.err.println("Invalid command provided: Usage LISTALL");
+      valid=false;
+    }
 
-    else if (userInput.contains("LISTPT") && (userInputArray.length > 2 || userInputArray.length == 1))
+    else if (userInput.contains("LISTPT") && (userInputArray.length > 2 || userInputArray.length == 1)){
 
       System.err.println("Invalid command provided: Usage LISTPT <PT ID>");
+      valid=false;
+    }
 
-    else if (userInput.contains("LISTCLIENT") && (userInputArray.length > 2 || userInputArray.length == 1))
+    else if (userInput.contains("LISTCLIENT") && (userInputArray.length > 2 || userInputArray.length == 1)){
 
       System.err.println("Invalid command provided: Usage LISTCLIENT <CLIENT ID>");
+      valid=false;
+    }
 
-    else if (userInput.contains("LISTDAY") && (userInputArray.length > 2 || userInputArray.length == 1))
+    else if (userInput.contains("LISTDAY") && (userInputArray.length > 2 || userInputArray.length == 1)){
 
       System.err.println("Invalid command provided: Usage LISTDAY <DATE> FORMAT 'YYYY-MM-DD'");
+      valid=false;
+    }
 
-    else if (userInput.contains("DELETE") && (userInputArray.length > 2 || userInputArray.length == 1))
+    else if (userInput.contains("DELETE") && (userInputArray.length > 2 || userInputArray.length == 1)){
 
       System.err.println("Invalid command provided: Usage DELETE <BookingID>");
-
-    else
-      valid = true;
+      valid=false;
+    }
 
     return valid;
 

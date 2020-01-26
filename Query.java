@@ -36,7 +36,7 @@ public class Query {
             query = " SELECT * FROM Booking " + " WHERE clientID = ?";
             break;
         case "LISTDAY":
-            query = " SELECT * FROM Booking " + " WHERE bookingdate = ?";
+            query = " SELECT * FROM Booking " + " WHERE bookingDate = ?";
             break;
         case "DELETE":
             query = " SELECT * FROM Booking " + " WHERE bookingID = ?";
