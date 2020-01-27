@@ -67,11 +67,14 @@ public class ClientConsole {
   public static boolean validateInput(String userInput) {
     boolean valid = true;
     String[] userInputArray = Query.splitInput(userInput);
-    if(!userInput.contains("LISTALL")||
-    !userInput.contains("LISTPT")||
-    !userInput.contains("LISTCLIENT")||
-    !userInput.contains("LISTDAY")||
-    !userInput.contains("DELETE")){
+    if(!userInput.contains("LISTALL")&&
+    !userInput.contains("LISTPT")&&
+    !userInput.contains("LISTCLIENT")&&
+    !userInput.contains("LISTDAY")&&
+    !userInput.contains("DELETE")&&
+    !userInput.contains("ADD")&&
+    !userInput.contains("UPDATE")){
+      
       
       System.err.println("Inavalid Commad, try again!");
       valid=false;
