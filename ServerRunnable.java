@@ -22,7 +22,18 @@ public class ServerRunnable implements Runnable {
                 userinput = in.nextLine();
                 String result[] = Query.splitInput(userinput);
                 if (userinput.contains("ADD")) {
-
+                    Integer status=Query.performAdd(result);
+                    switch(status){
+                        case 0:
+                        System.err.println("Dublicate BookingID, perform UPDATE!");
+                        break;
+                        case 1:
+                        System.err.println("Please check trainer inputs, trainer specialism doesnt match!");
+                        break;
+                        case 2:
+                        System.out.println("Add Successful");
+                        break;
+                    }
                     System.out.println("ADD Operation: " + userinput + " from client: " + socket.toString());
                 } else if (userinput.equals("LISTALL") && result.length == 1) {
 

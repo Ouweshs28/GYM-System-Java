@@ -59,7 +59,7 @@ public class Query {
         } catch (SQLException ex) {
             System.out.println("SQL error: " + ex.getMessage());
         }
-        if(result[0].equals("DELETE")){
+        if (result[0].equals("DELETE")) {
             deleteFromDB(bookings, result[1]);
         }
 
@@ -85,6 +85,139 @@ public class Query {
             }
         }
 
+    }
+
+    public static Boolean verifyBookingid(String bid) {
+        Boolean dublicate = false;
+        String query = " SELECT * FROM Booking " + " WHERE bookingID = ?";
+        try {
+
+            PreparedStatement preparedStatement = DBconnect.prepareStatement(query);
+            preparedStatement.setString(1, bid);
+
+            ResultSet rs = preparedStatement.executeQuery();
+            while (rs.next()) {
+                dublicate = true;
+            }
+        } catch (SQLException ex) {
+            System.out.println("SQL error: " + ex.getMessage());
+        }
+        return dublicate;
+    }
+
+    public static Boolean verifyTrainer(String tid, String focus) {
+        Boolean valid = false;
+        String query = " SELECT * FROM Specialism " + " WHERE trainerID = ? AND focus= ?";
+        try {
+
+            PreparedStatement preparedStatement = DBconnect.prepareStatement(query);
+            preparedStatement.setString(1, tid);
+            preparedStatement.setString(2, focus);
+
+            ResultSet rs = preparedStatement.executeQuery();
+            while (rs.next()) {
+                valid = true;
+            }
+        } catch (SQLException ex) {
+            System.out.println("SQL error: " + ex.getMessage());
+        }
+        return valid;
+    }
+
+    public static Boolean checkClient(String cid) {
+        Boolean exist = false;
+        String query = " SELECT * FROM Booking " + " WHERE clientID = ?";
+        try {
+
+            PreparedStatement preparedStatement = DBconnect.prepareStatement(query);
+            preparedStatement.setString(1, cid);
+
+            ResultSet rs = preparedStatement.executeQuery();
+            while (rs.next()) {
+                exist = true;
+            }
+        } catch (SQLException ex) {
+            System.out.println("SQL error: " + ex.getMessage());
+        }
+        return exist;
+    }
+
+    public static void addClient(String[] userInput) {
+        String add = "INSERT INTO Client VALUES(?, ?, ?)";
+        String cid = userInput[3];
+        String fname = userInput[4];
+        String lame = userInput[5];
+        String cname = fname + " " + lame;
+        String gender = userInput[6];
+        try {
+            PreparedStatement preparedStatement = DBconnect.prepareStatement(add);
+            preparedStatement.setString(1, cid);
+            preparedStatement.setString(2, cname);
+            preparedStatement.setString(3, gender);
+
+            preparedStatement.executeQuery();
+
+        } catch (SQLException ex) {
+            System.out.println("SQL error: " + ex.getMessage());
+        }
+
+    }
+
+    public static void addBooking(String[] add) {
+        /*
+         * 1-BookingID - Position 1 2-TrainerID - Position 2 3-ClientID - Position 3
+         * 4-CLientDetails- Postion 4-FName, 5 LastName, 6 Gender
+         * 
+         * 
+         */
+        String addQury = "INSERT INTO Booking VALUES(?, ?, ?, ?, ?, ?, ?, ?)";
+        try {
+            PreparedStatement preparedStatement = DBconnect.prepareStatement(addQury);
+            preparedStatement.setString(1, add[1]);
+            preparedStatement.setString(2, add[2]);
+            preparedStatement.setString(3, add[3]);
+            preparedStatement.setString(4, add[7]);
+            preparedStatement.setString(5, add[8]);
+            preparedStatement.setString(6, add[9]);
+            preparedStatement.setString(7, add[10]);
+            preparedStatement.setString(8, add[11]);
+            preparedStatement.executeUpdate();
+
+        } catch (SQLException ex) {
+            System.out.println("SQL error: " + ex.getMessage());
+        }
+    }
+
+    public static Integer performAdd(String[] userInput) {
+        boolean confrim = false, valid = false,dublicate=false;
+        Integer status = 0;
+        System.out.println("Vertify Booking");
+        dublicate = verifyBookingid(userInput[1]);
+        if (!dublicate) {
+            System.out.println("Booking Passed");
+            valid = verifyTrainer(userInput[2], userInput[7]);
+            status=1;
+            if (valid) {
+                System.out.println("Trainer Passed");
+                status = 2;
+                boolean clienExist = checkClient(userInput[3]);
+                System.out.println("Checking Client");
+                if (!clienExist) {
+                    System.out.println("Creating Client");
+                    addClient(userInput);
+                }
+
+            }
+            if (valid) {
+                confrim = true;
+            }
+        }
+        if (confrim) {
+            addBooking(userInput);
+            status = 3;
+
+        }
+        return status;
     }
 
 }
