@@ -21,19 +21,8 @@ public class ServerRunnable implements Runnable {
             while (in.hasNextLine()) {
                 userinput = in.nextLine();
                 String result[] = Query.splitInput(userinput);
-                if (userinput.contains("ADD")) {
-                    Integer status=Query.performAdd(result);
-                    switch(status){
-                        case 0:
-                        System.err.println("Dublicate BookingID, perform UPDATE!");
-                        break;
-                        case 1:
-                        System.err.println("Please check trainer inputs, trainer specialism doesnt match!");
-                        break;
-                        case 2:
-                        System.out.println("Add Successful");
-                        break;
-                    }
+                if (userinput.contains("ADD") && result.length==12) {
+                    sendAdd(outobj, result);
                     System.out.println("ADD Operation: " + userinput + " from client: " + socket.toString());
                 } else if (userinput.equals("LISTALL") && result.length == 1) {
 
@@ -73,6 +62,10 @@ public class ServerRunnable implements Runnable {
         sendResultToClient(outobj, bookings);
 
     }
+    public void sendAdd(ObjectOutputStream outobj,String[] result) {
+        Integer status=Query.performAdd(result);
+        sendAddToClient(outobj, status);
+    }
 
     public void sendQueryResult(ObjectOutputStream outobj, String[] split) {
         ArrayList<Booking> bookings = Query.listQuries(split);
@@ -90,4 +83,16 @@ public class ServerRunnable implements Runnable {
             e.printStackTrace();
         }
     }
+
+public void sendAddToClient(ObjectOutputStream outobj,Integer status) {
+    try {
+        outobj.reset();
+        outobj.flush();
+        outobj.writeObject(status);
+        System.out.println("Sending add result to client");
+    } catch (IOException e) {
+        System.out.println("IO Exception");
+        e.printStackTrace();
+    }
+}
 }

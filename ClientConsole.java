@@ -24,7 +24,15 @@ public class ClientConsole {
         out.println(userInput);
         boolean valid;
         if (valid = validateInput(userInput)) {
-          getFromServer(inobj, userInput);
+          if (userInput.contains("LIST")) {
+            if (valid = validateID(userInput, 1)) {
+              getFromServer(inobj, userInput);
+            }
+          } else if (userInput.contains("ADD")) {
+            if (valid = validateID(userInput, 1)) {
+              getFromServerAdd(inobj);
+            }
+          }
         }
 
       }
@@ -34,6 +42,28 @@ public class ClientConsole {
     } catch (IOException e) {
       System.err.println("Couldn't get I/O for the connection to " + hostName);
       System.exit(1);
+    }
+  }
+
+  public static void getFromServerAdd(ObjectInputStream inobj) {
+    Integer status;
+    try {
+      status = (Integer) inobj.readObject();
+      switch (status) {
+      case 0:
+        System.err.println("Dublicate BookingID, perform UPDATE!");
+        break;
+      case 1:
+        System.err.println("Please check trainer inputs, trainer specialism doesnt match!");
+        break;
+      case 2:
+        System.out.println("Add Successful");
+        break;
+      }
+
+    } catch (IOException | ClassNotFoundException e) {
+      System.err.println("Exception: ");
+      e.printStackTrace();
     }
   }
 
@@ -67,51 +97,62 @@ public class ClientConsole {
   public static boolean validateInput(String userInput) {
     boolean valid = true;
     String[] userInputArray = Query.splitInput(userInput);
-    if(!userInput.contains("LISTALL")&&
-    !userInput.contains("LISTPT")&&
-    !userInput.contains("LISTCLIENT")&&
-    !userInput.contains("LISTDAY")&&
-    !userInput.contains("DELETE")&&
-    !userInput.contains("ADD")&&
-    !userInput.contains("UPDATE")){
-      
-      
+    if (!userInput.contains("LISTALL") && !userInput.contains("LISTPT") && !userInput.contains("LISTCLIENT")
+        && !userInput.contains("LISTDAY") && !userInput.contains("DELETE") && !userInput.contains("ADD")
+        && !userInput.contains("UPDATE")) {
+
       System.err.println("Inavalid Commad, try again!");
-      valid=false;
+      valid = false;
     }
-    
-  
-    if (userInput.contains("LISTALL") && userInputArray.length > 1){
+
+    if (userInput.contains("LISTALL") && userInputArray.length > 1) {
 
       System.err.println("Invalid command provided: Usage LISTALL");
-      valid=false;
+      valid = false;
     }
 
-    else if (userInput.contains("LISTPT") && (userInputArray.length > 2 || userInputArray.length == 1)){
+    else if (userInput.contains("LISTPT") && (userInputArray.length > 2 || userInputArray.length == 1)) {
 
       System.err.println("Invalid command provided: Usage LISTPT <PT ID>");
-      valid=false;
+      valid = false;
     }
 
-    else if (userInput.contains("LISTCLIENT") && (userInputArray.length > 2 || userInputArray.length == 1)){
+    else if (userInput.contains("LISTCLIENT") && (userInputArray.length > 2 || userInputArray.length == 1)) {
 
       System.err.println("Invalid command provided: Usage LISTCLIENT <CLIENT ID>");
-      valid=false;
+      valid = false;
     }
 
-    else if (userInput.contains("LISTDAY") && (userInputArray.length > 2 || userInputArray.length == 1)){
+    else if (userInput.contains("LISTDAY") && (userInputArray.length > 2 || userInputArray.length == 1)) {
 
       System.err.println("Invalid command provided: Usage LISTDAY <DATE> FORMAT 'YYYY-MM-DD'");
-      valid=false;
+      valid = false;
     }
 
-    else if (userInput.contains("DELETE") && (userInputArray.length > 2 || userInputArray.length == 1)){
+    else if (userInput.contains("DELETE") && (userInputArray.length > 2 || userInputArray.length == 1)) {
 
       System.err.println("Invalid command provided: Usage DELETE <BookingID>");
-      valid=false;
+      valid = false;
+    } else if (userInput.contains("ADD") && (userInputArray.length > 12 || userInputArray.length < 1)) {
+      System.err.println(
+          "Invalid command provided: Usage ADD <BookingID> <ClientID> <TrainerID> <ClientID> <Client Name> <Client Gender> <Focus> <Date> <Start Time> <Duration> <End Time>");
+      valid = false;
     }
 
     return valid;
 
   }
+
+  public static Boolean validateID(String userInput, Integer postion) {
+    String[] userInputArray = Query.splitInput(userInput);
+    Boolean valid = false;
+    if (userInputArray[postion].startsWith("B") && userInputArray[postion].startsWith("C")
+        && userInputArray[postion].startsWith("T") || userInputArray[postion].length() == 4) {
+      valid = true;
+    } else {
+      System.err.println("Invalid ID entered!");
+    }
+    return valid;
+  }
+
 }

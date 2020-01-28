@@ -190,16 +190,16 @@ public class Query {
 
     public static Integer performAdd(String[] userInput) {
         boolean confrim = false, valid = false,dublicate=false;
-        Integer status = 0;
+        Integer status = 0;//Dublicate BookingID
         System.out.println("Vertify Booking");
         dublicate = verifyBookingid(userInput[1]);
         if (!dublicate) {
             System.out.println("Booking Passed");
             valid = verifyTrainer(userInput[2], userInput[7]);
-            status=1;
+            status=1; //Trainer Details does not match
             if (valid) {
                 System.out.println("Trainer Passed");
-                status = 2;
+                status = 2;// Passed
                 boolean clienExist = checkClient(userInput[3]);
                 System.out.println("Checking Client");
                 if (!clienExist) {
