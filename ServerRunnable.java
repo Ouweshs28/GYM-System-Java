@@ -21,15 +21,13 @@ public class ServerRunnable implements Runnable {
             while (in.hasNextLine()) {
                 userinput = in.nextLine();
                 String result[] = Query.splitInput(userinput);
-                if (userinput.contains("ADD") && result.length==12) {
+                if (userinput.contains("ADD") && result.length == 12) {
                     sendAdd(outobj, result);
                     System.out.println("ADD Operation: " + userinput + " from client: " + socket.toString());
                 } else if (userinput.equals("LISTALL") && result.length == 1) {
-
                     sendAllResult(outobj);
                     System.out.println("LISTALL Operation: " + userinput + " from client: " + socket.toString());
                 } else if (userinput.contains("LISTPT") && result.length == 2) {
-
                     sendQueryResult(outobj, result);
                     System.out.println(
                             "LIST PERSONAL TRANIER Operation: " + userinput + " from client: " + socket.toString());
@@ -58,17 +56,21 @@ public class ServerRunnable implements Runnable {
     }
 
     public void sendAllResult(ObjectOutputStream outobj) {
-        ArrayList<Booking> bookings = Query.listAll();
+        Query toListAll=new Query();
+        ArrayList<Booking> bookings = toListAll.listAll();
         sendResultToClient(outobj, bookings);
 
     }
-    public void sendAdd(ObjectOutputStream outobj,String[] result) {
-        Integer status=Query.performAdd(result);
+
+    public void sendAdd(ObjectOutputStream outobj, String[] result) {
+        Query add= new Query();
+        Integer status = add.performAdd(result);
         sendAddToClient(outobj, status);
     }
 
     public void sendQueryResult(ObjectOutputStream outobj, String[] split) {
-        ArrayList<Booking> bookings = Query.listQuries(split);
+        Query splitQuery=new Query(); 
+        ArrayList<Booking> bookings = splitQuery.listQuries(split);
         sendResultToClient(outobj, bookings);
     }
 
@@ -84,15 +86,15 @@ public class ServerRunnable implements Runnable {
         }
     }
 
-public void sendAddToClient(ObjectOutputStream outobj,Integer status) {
-    try {
-        outobj.reset();
-        outobj.flush();
-        outobj.writeObject(status);
-        System.out.println("Sending add result to client");
-    } catch (IOException e) {
-        System.out.println("IO Exception");
-        e.printStackTrace();
+    public void sendAddToClient(ObjectOutputStream outobj, Integer status) {
+        try {
+            outobj.reset();
+            outobj.flush();
+            outobj.writeObject(status);
+            System.out.println("Sending add result to client");
+        } catch (IOException e) {
+            System.out.println("IO Exception");
+            e.printStackTrace();
+        }
     }
-}
 }

@@ -21,20 +21,15 @@ public class ClientConsole {
       System.out.println("Connection to server successful");
       String userInput;
       while ((userInput = stdIn.readLine()) != null) {
-        out.println(userInput);
         boolean valid;
         if (valid = validateInput(userInput)) {
-          if (userInput.contains("LIST")) {
-            if (valid = validateID(userInput, 1)) {
-              getFromServer(inobj, userInput);
-            }
+          out.println(userInput);
+          if (userInput.contains("LIST") || userInput.contains("DELETE")) {
+            getFromServer(inobj, userInput);
           } else if (userInput.contains("ADD")) {
-            if (valid = validateID(userInput, 1)) {
-              getFromServerAdd(inobj);
-            }
+            getFromServerAdd(inobj);
           }
         }
-
       }
     } catch (UnknownHostException e) {
       System.err.println("Don't know about host " + hostName);
@@ -56,7 +51,7 @@ public class ClientConsole {
       case 1:
         System.err.println("Please check trainer inputs, trainer specialism doesnt match!");
         break;
-      case 2:
+      case 3:
         System.out.println("Add Successful");
         break;
       }
@@ -103,56 +98,160 @@ public class ClientConsole {
 
       System.err.println("Inavalid Commad, try again!");
       valid = false;
+      return valid;
     }
 
     if (userInput.contains("LISTALL") && userInputArray.length > 1) {
 
       System.err.println("Invalid command provided: Usage LISTALL");
       valid = false;
+      return valid;
     }
 
-    else if (userInput.contains("LISTPT") && (userInputArray.length > 2 || userInputArray.length == 1)) {
+    if (userInput.contains("LISTPT") && (userInputArray.length > 2 || userInputArray.length == 1)) {
 
       System.err.println("Invalid command provided: Usage LISTPT <PT ID>");
       valid = false;
+      return valid;
     }
 
-    else if (userInput.contains("LISTCLIENT") && (userInputArray.length > 2 || userInputArray.length == 1)) {
+    if (userInputArray.length > 1) {
+      if ((userInput.contains("LISTPT")) && (!userInputArray[1].startsWith("T"))) {
+        System.err.println("Invalid TrainerID! Format- TXXX");
+        valid = false;
+        return valid;
+
+      }
+    }
+
+    if (userInput.contains("LISTCLIENT") && (userInputArray.length != 2)) {
 
       System.err.println("Invalid command provided: Usage LISTCLIENT <CLIENT ID>");
       valid = false;
+      return valid;
     }
 
-    else if (userInput.contains("LISTDAY") && (userInputArray.length > 2 || userInputArray.length == 1)) {
+    if (userInputArray.length == 2) {
+      if ((userInput.contains("LISTCLIENT")) && (!userInputArray[1].startsWith("C"))) {
+        System.err.println("Invalid ClientID! Format- CXXX");
+        valid = false;
+        return valid;
 
-      System.err.println("Invalid command provided: Usage LISTDAY <DATE> FORMAT 'YYYY-MM-DD'");
+      }
+    }
+    if (userInput.contains("LISTDAY") && (userInputArray.length != 2)) {
+      System.err.println("Invalid command provided: Usage LISTDAY <DATE>");
       valid = false;
+      return valid;
     }
+    if (userInputArray.length > 1) {
+      if (userInput.contains("LISTDAY")
+          && (!userInputArray[1].matches("[0-9]{4}[-]{1}[0-1]{1}[0-2]{1}[-]{1}[0-3]{1}[0-9]{1}"))) {
+        System.err.println("Invalid DATE! Format- YYYY-MM-DD");
+        valid = false;
+        return valid;
+      }
+      if (userInputArray.length > 8) {
+        if (userInput.contains("ADD")
+            && (!userInputArray[8].matches("[0-9]{4}[-]{1}[0-1]{1}[0-2]{1}[-]{1}[0-3]{1}[0-9]{1}"))) {
 
-    else if (userInput.contains("DELETE") && (userInputArray.length > 2 || userInputArray.length == 1)) {
+          System.err.println("Invalid DATE! Format- YYYY-MM-DD");
+          valid = false;
+          return valid;
+        }
+      }
+    }
+    if (userInput.contains("DELETE") && (userInputArray.length > 2 || userInputArray.length == 1)) {
 
       System.err.println("Invalid command provided: Usage DELETE <BookingID>");
       valid = false;
-    } else if (userInput.contains("ADD") && (userInputArray.length > 12 || userInputArray.length < 1)) {
+      return valid;
+    }
+
+    if ((userInput.contains("DELETE")) && (!userInputArray[1].startsWith("B"))) {
+      System.err.println("Invalid BookingID! Format- BXXX");
+      valid = false;
+      return valid;
+
+    }
+    if (userInput.contains("ADD") && (userInputArray.length > 12 || userInputArray.length < 1)) {
       System.err.println(
           "Invalid command provided: Usage ADD <BookingID> <ClientID> <TrainerID> <ClientID> <Client Name> <Client Gender> <Focus> <Date> <Start Time> <Duration> <End Time>");
       valid = false;
+      return valid;
+    }
+    if (userInputArray.length > 1) {
+      if ((userInput.contains("ADD") && (!userInputArray[1].startsWith("B")))) {
+
+        System.err.println("Invalid BookingID! Format- BXXX");
+        valid = false;
+        return valid;
+      }
     }
 
+    if (userInputArray.length > 2) {
+      if ((userInput.contains("ADD") && (!userInputArray[2].startsWith("T")))) {
+
+        System.err.println("Invalid TrainerID! Format- TXXX");
+        valid = false;
+        return valid;
+      }
+    }
+
+    if (userInputArray.length > 3) {
+      if ((userInput.contains("ADD") && (!userInputArray[3].startsWith("C")))) {
+
+        System.err.println("Invalid ClientID! Format- CXXX");
+        valid = false;
+        return valid;
+      }
+
+    }
+    if (userInputArray.length > 4) {
+      if ((userInput.contains("ADD")
+          && (!userInputArray[4].matches("^[\\p{L} .'-]+$") && (!userInputArray[5].matches("^[\\p{L} .'-]+$"))))) {
+
+        System.err.println("Invalid Name! Do not input numbers");
+        valid = false;
+        return valid;
+      }
+
+    }
+    if (userInputArray.length > 6) {
+      if ((userInput.contains("ADD")
+          && (userInput.contains("ADD") && !(userInputArray[6].equals("M") || !userInputArray[6].equals("F"))))) {
+        System.err.println("Invalid Client Gender!: M for Male F for female");
+        valid = false;
+        return valid;
+      }
+    }
+
+    if (userInputArray.length > 9) {
+      if ((userInput.contains("ADD") && (!userInputArray[9].matches("\\d{6}")))) {
+        System.err.println("Invalid Time! Enter 100000 for 10 00am for example");
+        valid = false;
+        return valid;
+
+      }
+    }
+
+    if (userInputArray.length > 10) {
+      if ((userInput.contains("ADD") && (!userInputArray[10].matches("\\d{6}")))) {
+        System.err.println("Invalid Time! Enter 100000 for 10 00am for example");
+        valid = false;
+        return valid;
+
+      }
+    }
+    if (userInputArray.length > 11) {
+      if ((userInput.contains("ADD") && (!userInputArray[11].matches("\\d{6}")))) {
+        System.err.println("Invalid Time! Enter 100000 for 10 00am for example");
+        valid = false;
+        return valid;
+
+      }
+    }
     return valid;
 
   }
-
-  public static Boolean validateID(String userInput, Integer postion) {
-    String[] userInputArray = Query.splitInput(userInput);
-    Boolean valid = false;
-    if (userInputArray[postion].startsWith("B") && userInputArray[postion].startsWith("C")
-        && userInputArray[postion].startsWith("T") || userInputArray[postion].length() == 4) {
-      valid = true;
-    } else {
-      System.err.println("Invalid ID entered!");
-    }
-    return valid;
-  }
-
 }

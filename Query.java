@@ -5,7 +5,7 @@ public class Query {
 
     private static Connection DBconnect = DatabaseConnection.getConnection();
 
-    public static ArrayList<Booking> listAll() {
+    public ArrayList<Booking> listAll() {
         ArrayList<Booking> bookings = new ArrayList<Booking>();
 
         try {
@@ -25,7 +25,7 @@ public class Query {
 
     }
 
-    public static ArrayList<Booking> listQuries(String[] result) {
+    public ArrayList<Booking> listQuries(String[] result) {
         String query = null;
 
         switch (result[0]) {
@@ -188,7 +188,7 @@ public class Query {
         }
     }
 
-    public static Integer performAdd(String[] userInput) {
+    public Integer performAdd(String[] userInput) {
         boolean confrim = false, valid = false,dublicate=false;
         Integer status = 0;//Dublicate BookingID
         System.out.println("Vertify Booking");
