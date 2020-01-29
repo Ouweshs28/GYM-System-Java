@@ -40,7 +40,7 @@ public class ServerRunnable implements Runnable {
                             "LIST BOOKING DAYS Operation: " + userinput + " from client: " + socket.toString());
                     sendQueryResult(outobj, result);
                 } else if (userinput.contains("UPDATE")) {
-
+                    sendUpdate(outobj, result);
                     System.out.println("UPDATE BOOKING Operation: " + userinput + " from client: " + socket.toString());
                 } else if (userinput.contains("DELETE") && result.length == 2) {
 
@@ -68,6 +68,12 @@ public class ServerRunnable implements Runnable {
         sendAddToClient(outobj, status);
     }
 
+    public void sendUpdate(ObjectOutputStream outobj, String[] result) {
+        Query update= new Query();
+        Integer status = update.performUpdate(result);
+        sendAddToClient(outobj, status);
+    }
+
     public void sendQueryResult(ObjectOutputStream outobj, String[] split) {
         Query splitQuery=new Query(); 
         ArrayList<Booking> bookings = splitQuery.listQuries(split);
@@ -91,7 +97,7 @@ public class ServerRunnable implements Runnable {
             outobj.reset();
             outobj.flush();
             outobj.writeObject(status);
-            System.out.println("Sending add result to client");
+            System.out.println("Sending Result to client");
         } catch (IOException e) {
             System.out.println("IO Exception");
             e.printStackTrace();

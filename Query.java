@@ -188,6 +188,32 @@ public class Query {
         }
     }
 
+    public static void updateBooking(String[] add) {
+        /*
+         * 1-BookingID - Position 1 2-TrainerID - Position 2 3-ClientID - Position 3
+         * 4-CLientDetails- Postion 4-FName, 5 LastName, 6 Gender
+         * 
+         * 
+         */
+        String update = "UPDATE Booking SET bookingID=?, trainerID=?, clientID=?, focus=?, bookingDate=?, bookingTime=?, duration=?, endtime=? WHERE bookingID=?";
+        try {
+            PreparedStatement preparedStatement = DBconnect.prepareStatement(update);
+            preparedStatement.setString(1, add[1]);
+            preparedStatement.setString(2, add[2]);
+            preparedStatement.setString(3, add[3]);
+            preparedStatement.setString(4, add[7]);
+            preparedStatement.setString(5, add[8]);
+            preparedStatement.setString(6, add[9]);
+            preparedStatement.setString(7, add[10]);
+            preparedStatement.setString(8, add[11]);
+            preparedStatement.setString(9, add[1]);
+            preparedStatement.executeUpdate();
+
+        } catch (SQLException ex) {
+            System.out.println("SQL error: " + ex.getMessage());
+        }
+    }
+
     public Integer performAdd(String[] userInput) {
         boolean confrim = false, valid = false,dublicate=false;
         Integer status = 0;//Dublicate BookingID
@@ -218,6 +244,42 @@ public class Query {
 
         }
         return status;
+    }
+
+    public Integer performUpdate(String [] userInput){
+        boolean confrim = false, valid = false,dublicate=false;
+        Integer status = 0;//Dublicate BookingID
+        System.out.println("Vertify Booking");
+        dublicate = verifyBookingid(userInput[1]);
+        if (!dublicate) {
+            return status;
+        }else{
+            valid = verifyTrainer(userInput[2], userInput[7]);
+            status=1; //Trainer Details does not match
+            if (valid) {
+                System.out.println("Trainer Passed");
+                status = 2;// Passed
+                boolean clienExist = checkClient(userInput[3]);
+                System.out.println("Checking Client");
+                if (!clienExist) {
+                    System.out.println("Creating Client");
+                    addClient(userInput);
+                }
+
+            }
+            if (valid) {
+                confrim = true;
+            }
+        }
+        if (confrim) {
+            updateBooking(userInput);
+            status = 3;
+
+        }
+    
+        return status;
+
+
     }
 
 }
