@@ -53,6 +53,9 @@ public class ClientConsole {
       case 1:
         System.err.println("Please check trainer inputs, trainer specialism doesnt match!");
         break;
+      case 2:
+        System.err.println("Trainer is already booked, please enter a different date or time");
+        break;
       case 3:
         System.out.println("Add Successful");
         break;
@@ -74,6 +77,9 @@ public class ClientConsole {
         break;
       case 1:
         System.err.println("Please check trainer inputs, trainer specialism doesnt match!");
+        break;
+      case 2:
+        System.err.println("Trainer is already booked, please enter a different date or time");
         break;
       case 3:
         System.out.println("Update Successful!");
@@ -115,7 +121,8 @@ public class ClientConsole {
 
   public static boolean validateInput(String userInput) {
     boolean valid = true;
-    String[] userInputArray = Query.splitInput(userInput);
+    Functions split=new Functions();
+    String[] userInputArray = split.splitInput(userInput);
     if (!userInput.contains("LISTALL") && !userInput.contains("LISTPT") && !userInput.contains("LISTCLIENT")
         && !userInput.contains("LISTDAY") && !userInput.contains("DELETE") && !userInput.contains("ADD")
         && !userInput.contains("UPDATE")) {
@@ -190,14 +197,14 @@ public class ClientConsole {
       return valid;
 
     }
-    if (userInput.contains("ADD") && (userInputArray.length!=12)) {
+    if (userInput.contains("ADD") && (userInputArray.length != 12)) {
       System.err.println(
           "Invalid command provided: Usage ADD <BookingID> <ClientID> <TrainerID> <ClientID> <Client Name> <Client Gender> <Focus> <Date> <Start Time> <Duration> <End Time>");
       valid = false;
       return valid;
     }
 
-    if (userInput.contains("UPDATE") && (userInputArray.length!=12)) {
+    if (userInput.contains("UPDATE") && (userInputArray.length != 12)) {
       System.err.println(
           "Invalid command provided: Usage UPDATE <BookingID> <ClientID> <TrainerID> <ClientID> <Client Name> <Client Gender> <Focus> <Date> <Start Time> <Duration> <End Time>");
       valid = false;
@@ -214,7 +221,7 @@ public class ClientConsole {
     }
 
     if (userInputArray.length > 2) {
-      if ((userInput.contains("ADD") || userInput.contains("UPDATE")  && (!userInputArray[2].startsWith("T")))) {
+      if ((userInput.contains("ADD") || userInput.contains("UPDATE") && (!userInputArray[2].startsWith("T")))) {
 
         System.err.println("Invalid TrainerID! Format- TXXX");
         valid = false;
@@ -223,7 +230,7 @@ public class ClientConsole {
     }
 
     if (userInputArray.length > 3) {
-      if ((userInput.contains("ADD") || userInput.contains("UPDATE")  && (!userInputArray[3].startsWith("C")))) {
+      if ((userInput.contains("ADD") || userInput.contains("UPDATE") && (!userInputArray[3].startsWith("C")))) {
 
         System.err.println("Invalid ClientID! Format- CXXX");
         valid = false;
@@ -232,7 +239,7 @@ public class ClientConsole {
 
     }
     if (userInputArray.length > 4) {
-      if ((userInput.contains("ADD") || userInput.contains("UPDATE") 
+      if ((userInput.contains("ADD") || userInput.contains("UPDATE")
           && (!userInputArray[4].matches("^[\\p{L} .'-]+$") && (!userInputArray[5].matches("^[\\p{L} .'-]+$"))))) {
 
         System.err.println("Invalid Name! Do not input numbers");
@@ -242,15 +249,15 @@ public class ClientConsole {
 
     }
     if (userInputArray.length > 6) {
-      if ((userInput.contains("ADD") || userInput.contains("UPDATE") 
-&& !(userInputArray[6].equals("M") || !userInputArray[6].equals("F")))) {
+      if ((userInput.contains("ADD")
+          || userInput.contains("UPDATE") && !(userInputArray[6].equals("M") || !userInputArray[6].equals("F")))) {
         System.err.println("Invalid Client Gender!: M for Male F for female");
         valid = false;
         return valid;
       }
     }
     if (userInputArray.length > 8) {
-      if (userInput.contains("ADD") || userInput.contains("UPDATE") 
+      if (userInput.contains("ADD") || userInput.contains("UPDATE")
           && (!userInputArray[8].matches("[0-9]{4}[-]{1}[0-1]{1}[0-2]{1}[-]{1}[0-3]{1}[0-9]{1}"))) {
 
         System.err.println("Invalid DATE! Format- YYYY-MM-DD");
@@ -260,7 +267,7 @@ public class ClientConsole {
     }
 
     if (userInputArray.length > 9) {
-      if ((userInput.contains("ADD") || userInput.contains("UPDATE")  && (!userInputArray[9].matches("\\d{6}")))) {
+      if ((userInput.contains("ADD") || userInput.contains("UPDATE") && (!userInputArray[9].matches("\\d{6}")))) {
         System.err.println("Invalid Time! Enter 100000 for 10 00am for example");
         valid = false;
         return valid;
@@ -269,7 +276,7 @@ public class ClientConsole {
     }
 
     if (userInputArray.length > 10) {
-      if ((userInput.contains("ADD") || userInput.contains("UPDATE")  && (!userInputArray[10].matches("\\d{6}")))) {
+      if ((userInput.contains("ADD") || userInput.contains("UPDATE") && (!userInputArray[10].matches("\\d{6}")))) {
         System.err.println("Invalid Time! Enter 100000 for 10 00am for example");
         valid = false;
         return valid;
@@ -277,7 +284,7 @@ public class ClientConsole {
       }
     }
     if (userInputArray.length > 11) {
-      if ((userInput.contains("ADD") || userInput.contains("UPDATE")  && (!userInputArray[11].matches("\\d{6}")))) {
+      if ((userInput.contains("ADD") || userInput.contains("UPDATE") && (!userInputArray[11].matches("\\d{6}")))) {
         System.err.println("Invalid Time! Enter 100000 for 10 00am for example");
         valid = false;
         return valid;

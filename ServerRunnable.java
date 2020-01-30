@@ -20,7 +20,8 @@ public class ServerRunnable implements Runnable {
             String userinput;
             while (in.hasNextLine()) {
                 userinput = in.nextLine();
-                String result[] = Query.splitInput(userinput);
+                Functions split=new Functions();
+                String result[] = split.splitInput(userinput);
                 if (userinput.contains("ADD") && result.length == 12) {
                     sendAdd(outobj, result);
                     System.out.println("ADD Operation: " + userinput + " from client: " + socket.toString());

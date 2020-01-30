@@ -66,11 +66,6 @@ public class Query {
         return bookings;
     }
 
-    public static String[] splitInput(String str) {
-        String split[] = str.split(" ", 0);
-        return split;
-    }
-
     public static void deleteFromDB(ArrayList<Booking> bookings, String delete) {
         String query = "DELETE FROM Booking WHERE bookingID = ? ";
         if (bookings.size() != 0) {
@@ -214,18 +209,39 @@ public class Query {
         }
     }
 
+    public Boolean checkTrainerAvaiable(String tid, String date, String time) {
+        Boolean exist = false;
+        String query = " SELECT * FROM Booking " + " WHERE trainerID = ? AND bookingDate=? AND bookingTime=?";
+        try {
+
+            PreparedStatement preparedStatement = DBconnect.prepareStatement(query);
+            preparedStatement.setString(1, tid);
+            preparedStatement.setString(2, date);
+            preparedStatement.setString(3, time);
+
+            ResultSet rs = preparedStatement.executeQuery();
+            while (rs.next()) {
+                exist = true;
+            }
+        } catch (SQLException ex) {
+            System.out.println("SQL error: " + ex.getMessage());
+        }
+        return exist;
+
+    }
+
     public Integer performAdd(String[] userInput) {
-        boolean confrim = false, valid = false,dublicate=false;
-        Integer status = 0;//Dublicate BookingID
+        boolean confrim = false, valid = false, dublicate = false;
+        Integer status = 0;// Dublicate BookingID
         System.out.println("Vertify Booking");
         dublicate = verifyBookingid(userInput[1]);
         if (!dublicate) {
             System.out.println("Booking Passed");
             valid = verifyTrainer(userInput[2], userInput[7]);
-            status=1; //Trainer Details does not match
+            status = 1; // Trainer Details does not match
             if (valid) {
                 System.out.println("Trainer Passed");
-                status = 2;// Passed
+
                 boolean clienExist = checkClient(userInput[3]);
                 System.out.println("Checking Client");
                 if (!clienExist) {
@@ -234,6 +250,8 @@ public class Query {
                 }
 
             }
+            valid = checkTrainerAvaiable(userInput[2], userInput[5], userInput[6]);
+            status = 2;
             if (valid) {
                 confrim = true;
             }
@@ -246,19 +264,18 @@ public class Query {
         return status;
     }
 
-    public Integer performUpdate(String [] userInput){
-        boolean confrim = false, valid = false,dublicate=false;
-        Integer status = 0;//Dublicate BookingID
+    public Integer performUpdate(String[] userInput) {
+        boolean confrim = false, valid = false, dublicate = false;
+        Integer status = 0;// Dublicate BookingID
         System.out.println("Vertify Booking");
         dublicate = verifyBookingid(userInput[1]);
         if (!dublicate) {
             return status;
-        }else{
+        } else {
             valid = verifyTrainer(userInput[2], userInput[7]);
-            status=1; //Trainer Details does not match
+            status = 1; // Trainer Details does not match
             if (valid) {
                 System.out.println("Trainer Passed");
-                status = 2;// Passed
                 boolean clienExist = checkClient(userInput[3]);
                 System.out.println("Checking Client");
                 if (!clienExist) {
@@ -267,6 +284,8 @@ public class Query {
                 }
 
             }
+            valid = checkTrainerAvaiable(userInput[2], userInput[5], userInput[6]);
+            status = 2;
             if (valid) {
                 confrim = true;
             }
@@ -276,9 +295,8 @@ public class Query {
             status = 3;
 
         }
-    
-        return status;
 
+        return status;
 
     }
 
