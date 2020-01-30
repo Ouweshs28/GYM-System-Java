@@ -13,3 +13,7 @@ ADD B010 T001 C001 John White M flexibility 2020-10-01 110000 010000 120000
 Invalid Date
 
 ADD B010 T001 C001 John White M flexibility 2 110000 010000 120000
+
+Double Booking
+
+ADD B020 T001 C001 John White M flexibility 2020-10-09 120000 010000 140000
