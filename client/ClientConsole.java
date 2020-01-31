@@ -1,5 +1,6 @@
 
 package client;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -27,8 +28,10 @@ public class ClientConsole {
       System.out.println("- To show bookings for specific TrainerID: LISTPT <TrainerID>");
       System.out.println("- To show bookings for specific ClientID: LISTCLIENT <ClientID>");
       System.out.println("- To show bookings for specific Date: LISTDAY <YYYY-MM-DD>");
-      System.out.println("- To add new booking: ADD <BookingID> <TrainerID> <ClientID> <Client Name> <Client Gender> <Focus> <Date> <Start Time> <Duration> <End Time>");
-      System.out.println("- To update existing booking: UPDATE <BookingID> <TrainerID> <ClientID> <Client Name> <Client Gender> <Focus> <Date> <Start Time> <Duration> <End Time>");
+      System.out.println(
+          "- To add new booking: ADD <BookingID> <TrainerID> <ClientID> <Client Name> <Client Gender> <Focus> <Date> <Start Time> <Duration> <End Time>");
+      System.out.println(
+          "- To update existing booking: UPDATE <BookingID> <TrainerID> <ClientID> <Client Name> <Client Gender> <Focus> <Date> <Start Time> <Duration> <End Time>");
       System.out.println("- To delete booking: DELETE <BookingID>");
       System.out.println("- To exit from the console application: QUIT or EXIT");
       System.out.println("COMMAND: ");
@@ -42,7 +45,7 @@ public class ClientConsole {
             getFromServerAdd(inobj);
           } else if (userInput.contains("UPDATE")) {
             getFromServerUpdate(inobj);
-          }else if(userInput.contains("QUIT")){
+          } else if (userInput.contains("QUIT")) {
             clientSocket.close();
             System.out.println("--------BYE------");
             System.exit(0);
@@ -137,7 +140,7 @@ public class ClientConsole {
 
   public static boolean validateInput(String userInput) {
     boolean valid = true;
-    Functions split=new Functions();
+    Functions split = new Functions();
     String[] userInputArray = split.splitInput(userInput);
     if (!userInput.contains("LISTALL") && !userInput.contains("LISTPT") && !userInput.contains("LISTCLIENT")
         && !userInput.contains("LISTDAY") && !userInput.contains("DELETE") && !userInput.contains("ADD")
@@ -265,8 +268,8 @@ public class ClientConsole {
 
     }
     if (userInputArray.length > 6) {
-      if (((userInput.contains("ADD")
-          || userInput.contains("UPDATE")) && !(userInputArray[6].equals("M") || !userInputArray[6].equals("F")))) {
+      if (((userInput.contains("ADD") || userInput.contains("UPDATE"))
+          && !(userInputArray[6].equals("M") || !userInputArray[6].equals("F")))) {
         System.err.println("Invalid Client Gender!: M for Male F for female");
         valid = false;
         return valid;

@@ -1,4 +1,5 @@
 package server;
+
 import java.net.Socket;
 import java.io.*;
 import java.util.*;
@@ -23,7 +24,7 @@ public class ServerRunnable implements Runnable {
             String userinput;
             while (in.hasNextLine()) {
                 userinput = in.nextLine();
-                Functions split=new Functions();
+                Functions split = new Functions();
                 String result[] = split.splitInput(userinput);
                 if (userinput.contains("ADD") && result.length == 12) {
                     sendAdd(outobj, result);
@@ -60,26 +61,26 @@ public class ServerRunnable implements Runnable {
     }
 
     public void sendAllResult(ObjectOutputStream outobj) {
-        Query toListAll=new Query();
+        Query toListAll = new Query();
         ArrayList<Booking> bookings = toListAll.listAll();
         sendResultToClient(outobj, bookings);
 
     }
 
     public void sendAdd(ObjectOutputStream outobj, String[] result) {
-        Query add= new Query();
+        Query add = new Query();
         Integer status = add.performAdd(result);
         sendAddToClient(outobj, status);
     }
 
     public void sendUpdate(ObjectOutputStream outobj, String[] result) {
-        Query update= new Query();
+        Query update = new Query();
         Integer status = update.performUpdate(result);
         sendAddToClient(outobj, status);
     }
 
     public void sendQueryResult(ObjectOutputStream outobj, String[] split) {
-        Query splitQuery=new Query(); 
+        Query splitQuery = new Query();
         ArrayList<Booking> bookings = splitQuery.listQuries(split);
         sendResultToClient(outobj, bookings);
     }

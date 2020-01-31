@@ -1,4 +1,5 @@
 package server;
+
 import java.sql.*;
 import java.util.ArrayList;
 import common.*;
@@ -223,12 +224,12 @@ public class Query {
             preparedStatement.setString(3, time);
 
             ResultSet rs = preparedStatement.executeQuery();
-            /*while (rs.next()) {
-                exist = true;
-            }*/
+            /*
+             * while (rs.next()) { exist = true; }
+             */
             int result = 0;
             if (rs.next()) {
-                result= rs.getInt(1);
+                result = rs.getInt(1);
             }
             if (result == 1) {
                 return true;
@@ -259,7 +260,7 @@ public class Query {
                     addClient(userInput);
                 }
             }
-            
+
             valid = checkTrainerAvaiable(userInput[2], userInput[8], userInput[9]);
             if (valid) {
                 status = 2;
