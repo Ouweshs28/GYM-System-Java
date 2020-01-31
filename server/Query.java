@@ -1,5 +1,7 @@
+package server;
 import java.sql.*;
 import java.util.ArrayList;
+import common.*;
 
 public class Query {
 
@@ -241,7 +243,6 @@ public class Query {
             status = 1; // Trainer Details does not match
             if (valid) {
                 System.out.println("Trainer Passed");
-
                 boolean clienExist = checkClient(userInput[3]);
                 System.out.println("Checking Client");
                 if (!clienExist) {
@@ -250,7 +251,7 @@ public class Query {
                 }
 
             }
-            valid = checkTrainerAvaiable(userInput[2], userInput[5], userInput[6]);
+            valid = checkTrainerAvaiable(userInput[2], userInput[8], userInput[9]);
             status = 2;
             if (valid) {
                 confrim = true;

@@ -1,3 +1,4 @@
+package common;
 import java.io.Serializable;
 
 public class Booking implements Serializable{
