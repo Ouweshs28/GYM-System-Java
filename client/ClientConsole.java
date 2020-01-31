@@ -22,6 +22,16 @@ public class ClientConsole {
         BufferedReader stdIn = new BufferedReader(new InputStreamReader(System.in))) {
       System.out.println("Connection to server successful");
       String userInput;
+      System.out.println("LIST  OF COMMANDS:");
+      System.out.println("- To show all bookings: LISTALL");
+      System.out.println("- To show bookings for specific TrainerID: LISTPT <TrainerID>");
+      System.out.println("- To show bookings for specific ClientID: LISTCLIENT <ClientID>");
+      System.out.println("- To show bookings for specific Date: LISTDAY <YYYY-MM-DD>");
+      System.out.println("- To add new booking: ADD <BookingID> <TrainerID> <ClientID> <Client Name> <Client Gender> <Focus> <Date> <Start Time> <Duration> <End Time>");
+      System.out.println("- To update existing booking: UPDATE <BookingID> <TrainerID> <ClientID> <Client Name> <Client Gender> <Focus> <Date> <Start Time> <Duration> <End Time>");
+      System.out.println("- To delete booking: DELETE <BookingID>");
+      System.out.println("- To exit from the console application: QUIT or EXIT");
+      System.out.println("COMMAND: ");
       while ((userInput = stdIn.readLine()) != null) {
         boolean valid;
         if (valid = validateInput(userInput)) {
@@ -32,6 +42,10 @@ public class ClientConsole {
             getFromServerAdd(inobj);
           } else if (userInput.contains("UPDATE")) {
             getFromServerUpdate(inobj);
+          }else if(userInput.contains("QUIT")){
+            clientSocket.close();
+            System.out.println("--------BYE------");
+            System.exit(0);
           }
         }
       }
@@ -127,7 +141,7 @@ public class ClientConsole {
     String[] userInputArray = split.splitInput(userInput);
     if (!userInput.contains("LISTALL") && !userInput.contains("LISTPT") && !userInput.contains("LISTCLIENT")
         && !userInput.contains("LISTDAY") && !userInput.contains("DELETE") && !userInput.contains("ADD")
-        && !userInput.contains("UPDATE")) {
+        && !userInput.contains("UPDATE") && !userInput.contains("QUIT")) {
 
       System.err.println("Inavalid Commad, try again!");
       valid = false;
@@ -201,7 +215,7 @@ public class ClientConsole {
     }
     if (userInput.contains("ADD") && (userInputArray.length != 12)) {
       System.err.println(
-          "Invalid command provided: Usage ADD <BookingID> <ClientID> <TrainerID> <ClientID> <Client Name> <Client Gender> <Focus> <Date> <Start Time> <Duration> <End Time>");
+          "Invalid command provided: Usage ADD <BookingID> <TrainerID> <ClientID> <Client Name> <Client Gender> <Focus> <Date> <Start Time> <Duration> <End Time>");
       valid = false;
       return valid;
     }

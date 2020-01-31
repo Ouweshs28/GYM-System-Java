@@ -8,7 +8,7 @@ Invalid Focus
 ADD B010 T001 C001 John White M eoeeoeo 2020-10-01 110000 010000 120000
 
 Valid Data without Double Booking
-ADD B010 T001 C001 John White M flexibility 2020-10-01 110000 010000 120000
+ADD B010 T001 C001 John White M flexibility 2021-10-01 110000 010000 120000
 
 Invalid Date
 

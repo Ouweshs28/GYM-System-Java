@@ -213,7 +213,8 @@ public class Query {
 
     public Boolean checkTrainerAvaiable(String tid, String date, String time) {
         Boolean exist = false;
-        String query = " SELECT * FROM Booking " + " WHERE trainerID = ? AND bookingDate=? AND bookingTime=?";
+        System.out.println(tid + " " + date + " " + time);
+        String query = "SELECT EXISTS (SELECT * FROM Booking WHERE trainerID = ? AND bookingDate= ? AND bookingTime=?);";
         try {
 
             PreparedStatement preparedStatement = DBconnect.prepareStatement(query);
@@ -222,9 +223,17 @@ public class Query {
             preparedStatement.setString(3, time);
 
             ResultSet rs = preparedStatement.executeQuery();
-            while (rs.next()) {
+            /*while (rs.next()) {
                 exist = true;
+            }*/
+            int result = 0;
+            if (rs.next()) {
+                result= rs.getInt(1);
             }
+            if (result == 1) {
+                return true;
+            }
+
         } catch (SQLException ex) {
             System.out.println("SQL error: " + ex.getMessage());
         }
@@ -249,11 +258,12 @@ public class Query {
                     System.out.println("Creating Client");
                     addClient(userInput);
                 }
-
             }
+            
             valid = checkTrainerAvaiable(userInput[2], userInput[8], userInput[9]);
-            status = 2;
             if (valid) {
+                status = 2;
+            } else {
                 confrim = true;
             }
         }
@@ -285,14 +295,15 @@ public class Query {
                 }
 
             }
-            valid = checkTrainerAvaiable(userInput[2], userInput[5], userInput[6]);
-            status = 2;
+            valid = checkTrainerAvaiable(userInput[2], userInput[8], userInput[9]);
             if (valid) {
+                status = 2;
+            } else {
                 confrim = true;
             }
         }
         if (confrim) {
-            updateBooking(userInput);
+            addBooking(userInput);
             status = 3;
 
         }
